@@ -12,7 +12,7 @@ export const getVentas = async (req, res) => {
 export const getVenta = async (req, res) => {
   try {
     const { id_venta } = req.params;
-    const [rows] = await pool.query("SELECT * FROM Venta_Taquilla WHERE id_venta = ?", [id_venta]);
+    const [rows] = await pool.query("SELECT * FROM Venta_Taquilla WHERE id = ?", [id_venta]);
 
     if (rows.length <= 0) {
       return res.status(404).json({ message: "Venta not found" });
@@ -27,7 +27,7 @@ export const getVenta = async (req, res) => {
 export const deleteVenta = async (req, res) => {
   try {
     const { id_venta } = req.params;
-    const [result] = await pool.query("DELETE FROM Venta_Taquilla WHERE id_venta = ?", [id_venta]);
+    const [result] = await pool.query("DELETE FROM Venta_Taquilla WHERE id = ?", [id_venta]);
 
     if (result.affectedRows <= 0) {
       return res.status(404).json({ message: "Venta not found" });
@@ -58,14 +58,14 @@ export const updateVenta = async (req, res) => {
     const { precio_total, fecha, email, celular, id_vendedor, id_cliente } = req.body;
 
     const [result] = await pool.query(
-      "UPDATE Venta_Taquilla SET precio_total = IFNULL(?, precio_total), fecha = IFNULL(?, fecha), email = IFNULL(?, email), celular = IFNULL(?, celular), id_vendedor = IFNULL(?, id_vendedor), id_cliente = IFNULL(?, id_cliente) WHERE id_venta = ?",
+      "UPDATE Venta_Taquilla SET precio_total = IFNULL(?, precio_total), fecha = IFNULL(?, fecha), email = IFNULL(?, email), celular = IFNULL(?, celular), id_vendedor = IFNULL(?, id_vendedor), id_cliente = IFNULL(?, id_cliente) WHERE id = ?",
       [precio_total, fecha, email, celular, id_vendedor, id_cliente, id_venta]
     );
 
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Venta not found" });
 
-    const [rows] = await pool.query("SELECT * FROM Venta_Taquilla WHERE id_venta = ?", [id_venta]);
+    const [rows] = await pool.query("SELECT * FROM Venta_Taquilla WHERE id = ?", [id_venta]);
 
     res.json(rows[0]);
   } catch (error) {
