@@ -12,6 +12,14 @@ CREATE TABLE Venta_Taquilla(
     id_cliente INT
 );
 
+CREATE TABLE Detalles_Venta_Taquilla(
+    id_detalle INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    cantidad int,
+    area varchar(75),
+    precio_total FLOAT,
+    venta_id INT FOREIGN KEY REFERENCES Venta_Taquilla(id_venta)
+);
+
 DESCRIBE Venta_Taquilla;
 
 INSERT INTO Venta_Taquilla (precio_total, fecha, email, celular, id_vendedor, id_cliente)
