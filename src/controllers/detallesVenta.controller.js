@@ -59,7 +59,7 @@ export const updateDetalle = async (req, res) => {
 
     const [result] = await pool.query(
       "UPDATE Detalles_Venta_Taquilla SET cantidad = IFNULL(?, cantidad), area = IFNULL(?, area), precio_total = IFNULL(?, precio_total), venta_id = IFNULL(?, venta_id) WHERE id_detalle = ?",
-      [cantidad, area, precio_total, venta_id]
+      [cantidad, area, precio_total, venta_id, id_detalle]
     );
 
     if (result.affectedRows === 0)
