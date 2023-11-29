@@ -12,7 +12,7 @@ export const getDetalles = async (req, res) => {
 export const getDetalle = async (req, res) => {
   try {
     const { id_detalle } = req.params;
-    const [rows] = await pool.query("SELECT * FROM Detalles_Venta_Taquilla WHERE id_detalle = ?", [id_detalle]);
+    const [rows] = await pool.query("SELECT * FROM Detalles_Venta_Taquilla WHERE id = ?", [id_detalle]);
 
     if (rows.length <= 0) {
       return res.status(404).json({ message: "Detalle not found" });
@@ -40,7 +40,7 @@ export const createDetalle = async (req, res) => {
 export const deleteDetalle = async (req, res) => {
   try {
     const { id_detalle } = req.params;
-    const [result] = await pool.query("DELETE FROM Detalles_Venta_Taquilla WHERE id_detalle = ?", [id_detalle]);
+    const [result] = await pool.query("DELETE FROM Detalles_Venta_Taquilla WHERE id = ?", [id_detalle]);
 
     if (result.affectedRows <= 0) {
       return res.status(404).json({ message: "Detalle not found" });
@@ -58,14 +58,14 @@ export const updateDetalle = async (req, res) => {
     const { cantidad, area, precio_total, venta_id } = req.body;
 
     const [result] = await pool.query(
-      "UPDATE Detalles_Venta_Taquilla SET cantidad = IFNULL(?, cantidad), area = IFNULL(?, area), precio_total = IFNULL(?, precio_total), venta_id = IFNULL(?, venta_id) WHERE id_detalle = ?",
+      "UPDATE Detalles_Venta_Taquilla SET cantidad = IFNULL(?, cantidad), area = IFNULL(?, area), precio_total = IFNULL(?, precio_total), venta_id = IFNULL(?, venta_id) WHERE id = ?",
       [cantidad, area, precio_total, venta_id, id_detalle]
     );
 
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Detalle not found" });
 
-    const [rows] = await pool.query("SELECT * FROM Detalles_Venta_Taquilla WHERE id_detalle = ?", [id_detalle]);
+    const [rows] = await pool.query("SELECT * FROM Detalles_Venta_Taquilla WHERE id = ?", [id_detalle]);
 
     res.json(rows[0]);
   } catch (error) {

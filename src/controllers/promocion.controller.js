@@ -12,7 +12,7 @@ export const getPromociones = async (req, res) => {
 export const getPromocion = async (req, res) => {
   try {
     const { id_promocion } = req.params;
-    const [rows] = await pool.query("SELECT * FROM Promociones WHERE id_promocion = ?", [id_promocion]);
+    const [rows] = await pool.query("SELECT * FROM Promociones WHERE id = ?", [id_promocion]);
 
     if (rows.length <= 0) {
       return res.status(404).json({ message: "Promocion not found" });
@@ -40,7 +40,7 @@ export const createPromocion = async (req, res) => {
 export const deletePromocion = async (req, res) => {
   try {
     const { id_promocion } = req.params;
-    const [result] = await pool.query("DELETE FROM Promociones WHERE id_promocion = ?", [id_promocion]);
+    const [result] = await pool.query("DELETE FROM Promociones WHERE id = ?", [id_promocion]);
 
     if (result.affectedRows <= 0) {
       return res.status(404).json({ message: "Promocion not found" });
@@ -58,14 +58,14 @@ export const updatePromocion = async (req, res) => {
     const { nombre, descripcion, descuento, fecha_inicio, fecha_expiracion } = req.body;
 
     const [result] = await pool.query(
-      "UPDATE Promociones SET nombre = IFNULL(?, nombre), descripcion = IFNULL(?, descripcion), descuento = IFNULL(?, descuento), fecha_inicio = IFNULL(?, fecha_inicio), fecha_expiracion = IFNULL(?, fecha_expiracion) WHERE id_promocion = ?",
+      "UPDATE Promociones SET nombre = IFNULL(?, nombre), descripcion = IFNULL(?, descripcion), descuento = IFNULL(?, descuento), fecha_inicio = IFNULL(?, fecha_inicio), fecha_expiracion = IFNULL(?, fecha_expiracion) WHERE id = ?",
       [nombre, descripcion, descuento, fecha_inicio, fecha_expiracion, id_promocion]
     );
 
     if (result.affectedRows === 0)
       return res.status(404).json({ message: "Promocion not found" });
 
-    const [rows] = await pool.query("SELECT * FROM Promociones WHERE id_promocion = ?", [id_promocion]);
+    const [rows] = await pool.query("SELECT * FROM Promociones WHERE id = ?", [id_promocion]);
 
     res.json(rows[0]);
   } catch (error) {
