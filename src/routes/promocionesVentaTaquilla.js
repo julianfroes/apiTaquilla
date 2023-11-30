@@ -5,7 +5,7 @@ import {
   getPromocionVentaTaquilla,
   getPromocionesVentaTaquilla,
   updatePromocionVentaTaquilla,
-} from "../controllers/promocionesVentaTaquilla.controller.js";
+} from "../controllers/promocionesVentasTaquilla.controller.js";
 
 const router = Router();
 
