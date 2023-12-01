@@ -41,14 +41,27 @@ export const deleteVenta = async (req, res) => {
 
 export const createVenta = async (req, res) => {
   try {
-    const { precio_total, fecha, email, celular, id_vendedor, id_cliente } = req.body;
-    const [result] = await pool.query(
+    const { precio_total, fecha, email, celular, id_vendedor, id_cliente, detalles } = req.body;
+    // Insertar en Venta_Taquilla
+    const [resultVenta] = await pool.query(
       "INSERT INTO Venta_Taquilla (precio_total, fecha, email, celular, id_vendedor, id_cliente) VALUES (?, ?, ?, ?, ?, ?)",
       [precio_total, fecha, email, celular, id_vendedor, id_cliente]
     );
-    res.status(201).json({ id_venta: result.insertId, precio_total, fecha, email, celular, id_vendedor, id_cliente });
+
+    const ventaId = resultVenta.insertId;
+
+    // Crear registro en Detalles_Venta_Taquilla relacionado con la venta recién creada
+    for (const detalle of detalles) {
+      const { cantidad, area, precio_total, tipo_boleto } = detalle;
+      await pool.query(
+        "INSERT INTO Detalles_Venta_Taquilla (cantidad, area, precio_total, tipo_boleto, venta_id) VALUES (?, ?, ?, ?, ?)",
+        [cantidad, area, precio_total, tipo_boleto, ventaId]
+      );
+    }
+
+    res.status(201).json({ ventaId, message: "Venta creada con detalles de venta" });
   } catch (error) {
-    return res.status(500).json({ message: "Something goes wrong" });
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
