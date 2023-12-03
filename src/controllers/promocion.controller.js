@@ -55,11 +55,11 @@ export const deletePromocion = async (req, res) => {
 export const updatePromocion = async (req, res) => {
   try {
     const { id_promocion } = req.params;
-    const { nombre, descripcion, descuento, fecha_inicio, fecha_expiracion } = req.body;
+    const { nombre, descripcion, descuento, fecha_inicio, fecha_expiracion, diaSemana, cantidad, codigo } = req.body;
 
     const [result] = await pool.query(
-      "UPDATE Promociones SET nombre = IFNULL(?, nombre), descripcion = IFNULL(?, descripcion), descuento = IFNULL(?, descuento), fecha_inicio = IFNULL(?, fecha_inicio), fecha_expiracion = IFNULL(?, fecha_expiracion) WHERE id = ?",
-      [nombre, descripcion, descuento, fecha_inicio, fecha_expiracion, id_promocion]
+      "UPDATE Promociones SET nombre = IFNULL(?, nombre), descripcion = IFNULL(?, descripcion), descuento = IFNULL(?, descuento), fecha_inicio = IFNULL(?, fecha_inicio), fecha_expiracion = IFNULL(?, fecha_expiracion), dia_semana = IFNULL(?, dia_semana), cantidad = IFNULL(?, cantidad), codigo = IFNULL(?, codigo) WHERE id = ?",
+      [nombre, descripcion, descuento, fecha_inicio, fecha_expiracion, diaSemana, cantidad, codigo, id_promocion]
     );
 
     if (result.affectedRows === 0)
