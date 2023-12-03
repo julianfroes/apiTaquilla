@@ -5,12 +5,16 @@ import {
   getPromocion,
   getPromociones,
   updatePromocion,
+  buscarPromocionActiva,
 } from "../controllers/promocion.controller.js";
 
 const router = Router();
 
 // GET all Promociones
-router.get("/promocion", getPromociones);
+router.get("/promocion/all", getPromociones);
+
+// Promociones activas
+router.get("/promocion", buscarPromocionActiva);
 
 // GET A Promocion
 router.get("/promocion/:id_promocion", getPromocion);

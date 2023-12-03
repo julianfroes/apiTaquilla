@@ -72,3 +72,37 @@ export const updatePromocion = async (req, res) => {
     return res.status(500).json({ message: "Something goes wrong" });
   }
 };
+
+export const buscarPromocionActiva = async (req) => {
+  try {
+    const { diaSemana, codigoEspecial } = req.params;
+
+    let query = "SELECT * FROM Promociones WHERE fecha_inicio <= CURDATE() AND fecha_expiracion >= CURDATE()";
+
+    if (diaSemana) {
+      query += " AND (dia_semana = ? OR dia_semana IS NULL)";
+    }
+
+    if (codigoEspecial) {
+      query += " AND (codigo = ? OR codigo IS NULL)";
+    }
+
+    const queryParams = [];
+    if (diaSemana) {
+      queryParams.push(diaSemana);
+    }
+    if (codigoEspecial) {
+      queryParams.push(codigoEspecial);
+    }
+
+    const [rows] = await pool.query(query, queryParams);
+
+    if (rows.length > 0) {
+      return rows;
+    }
+
+    return null;
+  } catch (error) {
+    throw new Error("Error al buscar la promoción activa");
+  }
+};
