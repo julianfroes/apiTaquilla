@@ -75,7 +75,7 @@ export const updatePromocion = async (req, res) => {
 
 export const buscarPromocionActiva = async (req, res) => {
   try {
-    const { diaSemana, codigoEspecial } = req.params;
+    const { diaSemana, codigoEspecial } = req.body;
 
     let query = "SELECT * FROM Promociones WHERE fecha_inicio <= CURDATE() AND fecha_expiracion >= CURDATE()";
 
