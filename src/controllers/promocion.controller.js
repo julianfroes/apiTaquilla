@@ -73,7 +73,7 @@ export const updatePromocion = async (req, res) => {
   }
 };
 
-export const buscarPromocionActiva = async (req) => {
+export const buscarPromocionActiva = async (req, res) => {
   try {
     const { diaSemana, codigoEspecial } = req.params;
 
