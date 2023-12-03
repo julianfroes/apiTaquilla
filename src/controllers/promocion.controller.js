@@ -98,11 +98,10 @@ export const buscarPromocionActiva = async (req) => {
     const [rows] = await pool.query(query, queryParams);
 
     if (rows.length > 0) {
-      return rows;
+      res.status(200).json(rows);
     }
-
-    return null;
   } catch (error) {
+    res.status(500).json({ message: "Error al buscar la promoción activa" });
     throw new Error("Error al buscar la promoción activa");
   }
 };
